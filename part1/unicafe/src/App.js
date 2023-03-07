@@ -10,16 +10,32 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
+const StatisticLine = ({ text, value }) => {
+    return (
+      <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+      </tr>
+      )
+}
+
 const Statistics = (props) => {
+  let count =  props.good + props.neutral +props.bad
+  let average = (props.good - props.bad) / count
+  let positive = (props.good / count) * 100
+
   if(props.bad + props.good + props.neutral !== 0) {
     return <>
-    <h2>Statistics</h2>
-    <p>Good: {props.good}</p>
-    <p>Neutral: {props.neutral}</p>
-    <p>Bad: {props.bad}</p>
-    <p>Total: {props.bad + props.good + props.neutral}</p>
-    <p>Average: {(props.good - props.bad) / (props.bad + props.good + props.neutral)}</p>
-    <p>Positive Ratings: {(props.good) / (props.bad + props.good + props.neutral) * 100}%</p>
+    <table>
+      <tbody>
+        <StatisticLine text='Good' value={props.good} />
+        <StatisticLine text='Neutral' value={props.neutral} />
+        <StatisticLine text='Bad' value={props.bad} />
+        <StatisticLine text='All' value={count} />
+        <StatisticLine text='Average' value={average} />
+        <StatisticLine text='Positive' value={positive} />
+      </tbody>
+    </table>
     </>
   }
   return  (
@@ -31,8 +47,6 @@ const Statistics = (props) => {
 
 
 }
-
-
 
 const App = () => {
   // save clicks of each button to its own state
