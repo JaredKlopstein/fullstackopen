@@ -4,6 +4,7 @@ const Course = ({course}) => (
     {course.parts.map(part => 
       <p key={part.id}> {part.name} {part.exercises}</p>
     )}
+    <b>There are a total of {course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises} exercises</b>
   </>
 )
 
