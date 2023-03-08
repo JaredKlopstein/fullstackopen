@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import AddContact from './components/AddContact'
+import Contacts from './components/Contacts'
+import Filter from './components/Filter'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -19,7 +22,7 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1
     }
-    
+
     if(persons.find(person => person.name.toLowerCase() === newName.toLowerCase())){
       window.alert(`${newName} is already added to phonebook`)
     }
@@ -43,37 +46,23 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          Filter: <input placeholder="Search" value={newFilter} onChange={handleFilterChange}/>
-        </div>
-      </form>
+      <Filter 
+      newFilter={newFilter} 
+      handleFilterChange={handleFilterChange}
+      />
       <h2>Add a New Contact</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input placeholder="Enter Name!" value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input placeholder="Enter Number!" value={newNumber} onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <AddContact 
+      addPerson={addPerson}
+      newName={newName}
+      handleNameChange={handleNameChange}
+      newNumber={newNumber}
+      handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      <ul>
-        {(newFilter === '') 
-        ? <>{persons.map(person => 
-          <li key={person.name}>{person.name} {person.number}</li>
-        )}</> 
-        : <>
-        {persons.filter(person => 
-          person.name.toLowerCase().includes(newFilter.toLowerCase())).map(person => 
-          <li key={person.name}>{person.name} {person.number}</li>
-        )}
-        </>}
-        
-      </ul>
+      <Contacts 
+        newFilter={newFilter}
+        persons={persons}
+      />
     </div>
   )
 }
