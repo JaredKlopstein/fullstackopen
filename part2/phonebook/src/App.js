@@ -36,7 +36,7 @@ const App = () => {
     }
 
     if(persons.find(person => person.name.toLowerCase() === newName.toLowerCase())){
-      window.alert(`${newName} is already added to phonebook`)
+      update();
     }
     else {
       ContactServices.create(personObject).then((returnedPerson) => {
@@ -60,6 +60,22 @@ const App = () => {
       window.alert(`${person.name} not deleted`)
     }
   }
+
+  const update = () => {
+    const person = persons.find((person) => person.name.toLowerCase() === newName.toLowerCase());
+    const changedContact = { ...person, number: newNumber };
+    let confirmation = window.confirm(`${person.name} is already added to phonebook, replace the old number with the new one?`)
+    if(confirmation) {
+      ContactServices
+    .update(person.id, changedContact)
+    .then(returnedPerson => {
+      setPersons(persons.map(contact => contact.id !== person.id ? contact : returnedPerson))
+    })
+  }
+  else {
+    window.alert(`${person.name} not updated`)
+  }
+};
 
 
   return (
