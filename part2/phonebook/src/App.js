@@ -7,10 +7,19 @@ import ContactServices from './services/ContactServices'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value)
+  }
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value)
+  }
 
   useEffect(() => {
     ContactServices.getAll().then((contacts) => {
@@ -38,15 +47,20 @@ const App = () => {
     }
   }
 
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
+  const deleteContact = (id) => {
+    let person = persons.find(person => person.id === id)
+    let confirmation = window.confirm(`Do you want to delete ${person.name}`)
+    if(confirmation) {
+      ContactServices.deleteContact(id).then((returnedPerson) => {
+        persons.map((person) => (person.id !== id ? person : returnedPerson));
+      })
+      setPersons(persons.filter(person => person.id !== id))
+    }
+    else {
+      window.alert(`${person.name} not deleted`)
+    }
   }
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value)
-  }
-  const handleFilterChange = (event) => {
-    setNewFilter(event.target.value)
-  }
+
 
   return (
     <div>
@@ -67,6 +81,7 @@ const App = () => {
       <Contacts 
         newFilter={newFilter}
         persons={persons}
+        deleteContact={deleteContact}
       />
     </div>
   )
