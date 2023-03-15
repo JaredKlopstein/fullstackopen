@@ -1,4 +1,5 @@
 import React from 'react'
+import Weather from './Weather'
 
 function CountryInfo({country}) {
   return (
@@ -11,6 +12,7 @@ function CountryInfo({country}) {
     {Object.values(country.languages).map((language,index) => <li key={index}>{language}</li>)}
     </ul>
     <img src={Object.values(country.flags)[0]} alt={country.name} width="25%" height="25%" />
+    <Weather capital={country.capital}/>
     </>
   )
 }
