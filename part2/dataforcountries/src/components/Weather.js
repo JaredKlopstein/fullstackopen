@@ -8,7 +8,7 @@ function Weather({ capital }) {
   
 useEffect(() => {
     getWeather();
-}, [])
+},)
 
 const getWeather = async () => {
     const weatherData = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${api_key}`)
