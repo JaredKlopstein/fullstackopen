@@ -1,4 +1,6 @@
 import React from 'react'
+import Country from './Country';
+import CountryInfo from './CountryInfo';
 
 function Countries({ newSearch, countries }) {
     let filteredCountries = [];
@@ -17,22 +19,14 @@ function Countries({ newSearch, countries }) {
     else if (filteredCountries.length === 1) {
         const country = filteredCountries[0]
         return (
-        <>
-        <h1>{country.name.common}</h1>
-        <p>Capital: {country.capital}</p>
-        <p>Area: {country.area}</p>
-        <h2>Languages</h2>
-        <ul>
-        {Object.values(country.languages).map((language,index) => <li key={index}>{language}</li>)}
-        </ul>
-        <img src={Object.values(country.flags)[0]} alt={country.name} width="25%" height="25%" />
-        </>
-            )
+        <CountryInfo key={country.name.common} country={country}/>
+        )
     }   
 
     return (
     <>
-    {filteredCountries.map(country =><h2 key={country.name.common}>{country.name.common}</h2>)}
+    {filteredCountries.map(country =>
+        <Country key={country.name.common} country={country}/>)}
     </>
   )
 }
