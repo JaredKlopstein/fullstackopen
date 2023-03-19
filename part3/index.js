@@ -25,6 +25,16 @@ let persons = [
       "number": "39-23-6423122"
     }
 ]
+//Intro Page
+app.get('/', (request, response) => {
+    let date = new Date()
+    let contactLength = persons.length;
+    response.send(
+        `
+        <p>Phonebook has info for ${contactLength} people</p>
+        <p>${date}</p>
+        `)
+  })
 
 //get all persons
 app.get('/api/persons', (request, response) => {
