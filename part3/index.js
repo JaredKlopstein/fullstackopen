@@ -58,6 +58,39 @@ app.delete('/api/persons/:id', (request, response) => {
     persons = persons.filter(person => person.id !== id)
     response.status(204).end()
   })
+// create a new person with a unique id
+const generateId = () => {
+    const randId = Math.floor((1 + Math.random()) * 0x1000)
+    return randId
+  }
+  // post request
+  app.post('/api/persons', (request, response) => {
+    const body = request.body;
+    const name = request.body.name;
+  // if name or number is missing, return error
+    if (!body.name || !body.number) {
+      return response.status(400).json({ 
+        error: 'content missing' 
+      })
+    }
+    // if name exists, return error 
+    if(persons.find(person => person.name.toLowerCase() === name.toLowerCase())){
+        return response.status(400).json({ 
+          error: 'name must be unique' 
+        })
+      }
+      
+  //structure person
+    const person = {
+      id: generateId(),
+      name: body.name,
+      number: body.number,
+    }
+  //adds new person to list
+    persons = persons.concat(person)
+  
+    response.json(person)
+  })
 
 // creates the express webserver ?? 
 const PORT = 3001
