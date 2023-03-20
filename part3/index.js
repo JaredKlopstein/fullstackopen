@@ -3,7 +3,15 @@ const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
-app.use(morgan('tiny'))
+// app.use(morgan('tiny'))
+// the below morgan logs :content if the content is from a post request using custom token content
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
+
+morgan.token('content', (request) =>
+  request.method === 'POST' && request.body.name
+    ? `Name: ${request.body.name} Number: ${request.body.number}`
+    : ''
+)
 
 let persons = [
     { 
