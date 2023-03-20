@@ -1,7 +1,9 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
     { 
@@ -79,7 +81,7 @@ const generateId = () => {
           error: 'name must be unique' 
         })
       }
-      
+
   //structure person
     const person = {
       id: generateId(),
@@ -91,6 +93,7 @@ const generateId = () => {
   
     response.json(person)
   })
+
 
 // creates the express webserver ?? 
 const PORT = 3001
