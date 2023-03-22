@@ -4,6 +4,7 @@ const cors = require('cors')
 
 const app = express()
 
+app.use(express.static('build'))
 app.use(express.json())
 // app.use(morgan('tiny'))
 // the below morgan logs :content if the content is from a post request using custom token content
