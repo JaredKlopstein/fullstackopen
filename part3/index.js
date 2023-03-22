@@ -1,11 +1,14 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
+
 const app = express()
 
 app.use(express.json())
 // app.use(morgan('tiny'))
 // the below morgan logs :content if the content is from a post request using custom token content
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
+app.use(cors())
 
 morgan.token('content', (request) =>
   request.method === 'POST' && request.body.name
