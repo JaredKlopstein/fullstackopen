@@ -23,38 +23,18 @@ morgan.token("content", (request) =>
     : ""
 );
 
-let persons = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
-//Intro Page
-app.get("/", (request, response) => {
+//Info Page
+app.get("/info", (request, response) => {
   let date = new Date();
-  let contactLength = persons.length;
-  response.send(
-    `
-        <p>Phonebook has info for ${contactLength} people</p>
+  Person.find({})
+  .then(persons => {
+    response.send(
+      `
+        <p>Phonebook has info for ${persons.length} people</p>
         <p>${date}</p>
         `
-  );
+    )
+  })
 });
 
 //get all persons using mongoose model
@@ -123,6 +103,20 @@ app.post("/api/persons", (request, response) => {
     next(error);
   });
 });
+
+//updating a person 
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+  const person = {
+    name: body.name,
+    number: body.number,
+  }
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
+})
 
 //unknown endpoint handler 
 const unknownEndpoint = (request, response) => {
