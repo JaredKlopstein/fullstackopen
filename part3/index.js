@@ -52,14 +52,14 @@ app.get('/', (request, response) => {
         `)
   })
 
-//get all persons
+//get all persons using mongoose model
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(notes => {
     response.json(notes)
   })
 })
 
-//get specific person
+//get specific person using mongoose
 app.get('/api/persons/:id', (request, response) => {
   Person.findById(request.params.id).then(person => {
     response.json(person)
@@ -74,38 +74,37 @@ app.delete('/api/persons/:id', (request, response) => {
   })
 
 // create a new person with a unique id
-const generateId = () => {
-    const randId = Math.floor((1 + Math.random()) * 0x1000)
-    return randId
-  }
+// const generateId = () => {
+//     const randId = Math.floor((1 + Math.random()) * 0x1000)
+//     return randId
+//   }
   // post request
   app.post('/api/persons', (request, response) => {
     const body = request.body;
-    const name = request.body.name;
-  // if name or number is missing, return error
-    if (!body.name || !body.number) {
-      return response.status(400).json({ 
-        error: 'content missing' 
-      })
-    }
-    // if name exists, return error 
-    if(persons.find(person => person.name.toLowerCase() === name.toLowerCase())){
-        return response.status(400).json({ 
-          error: 'name must be unique' 
-        })
-      }
+    const name = body.name;
+    const number = body.number;
+  // // if name or number is missing, return error
+  //   if (!body.name || !body.number) {
+  //     return response.status(400).json({ 
+  //       error: 'content missing' 
+  //     })
+  //  }
+  //   // if name exists, return error 
+  //   if(persons.find(person => person.name.toLowerCase() === name.toLowerCase())){
+  //       return response.status(400).json({ 
+  //         error: 'name must be unique' 
+  //       })
+  //     }
 
-  //structure person
-    const person = {
-      id: generateId(),
-      name: body.name,
-      number: body.number,
-    }
-  //adds new person to list
-    persons = persons.concat(person)
-  
-    response.json(person)
+  const person = new Person({
+    name: name,
+    number: number
   })
+
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
+})
 
 
 // creates the express webserver 
