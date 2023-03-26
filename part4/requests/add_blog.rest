@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs/ HTTP/1.1
+content-type: application/json
+
+{
+  "title": "Jared makes an app",
+  "author": "Jared Klopstein",
+  "url": "jaredklopstein.com/blog/example",
+  "likes": 3
+}
