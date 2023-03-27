@@ -12,10 +12,21 @@ const total = (array) => {
       : array.reduce(reducer, 0)
   }
 
+  const favoriteBlog = (blogs) => {
+    const favorite = blogs.reduce((favorite, blog) => favorite = favorite.likes > blog.likes ? favorite : blog, 0)
+    
+    return {
+        title: favorite.title,
+        author: favorite.author,
+        likes: favorite.likes
+      }
+  }
+
 
   
   module.exports = {
     dummy,
-    total
+    total,
+    favoriteBlog
   }
 

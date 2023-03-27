@@ -47,3 +47,32 @@ describe('total likes', () => {
       expect(listHelper.total(listWithTwoBlogs)).toBe(11)
     })
 })
+
+describe('favorite blog', () => {
+    const listWithTwoBlogs = [
+        {
+          _id: '5a422aa71b54a676234d17f8',
+          title: 'Go To Statement Considered Harmful',
+          author: 'Edsger W. Dijkstra',
+          url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+          likes: 5,
+          __v: 0
+        },
+        {
+            _id: '5a422aa71b54a676234d17f2',
+            title: 'Go To Statement Considered Harmful V2',
+            author: 'Edsger W. Dijkstra',
+            url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+            likes: 6,
+            __v: 0
+          }
+      ]
+      test('favorite blog', () => {
+        expect(listHelper.favoriteBlog(listWithTwoBlogs)).toEqual(
+            {
+            title: "Go To Statement Considered Harmful V2",
+            author: "Edsger W. Dijkstra",
+            likes: 6
+          })
+      })
+})
