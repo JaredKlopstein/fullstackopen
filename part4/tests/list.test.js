@@ -73,6 +73,10 @@ const favorite = {
 const topAuth = {
     author: "Robert C. Martin",
     blogs: 3
+}
+const mostLikes = {
+    author: "Edsger W. Dijkstra",
+    likes: 17
   }
 
 test('dummy returns one', () => {
@@ -103,5 +107,10 @@ describe('favorite blog', () => {
 describe('most blogs', () => {
       test('most blogs', () => {
         expect(listHelper.mostBlogs(blogs)).toEqual(topAuth)
+      })
+})
+describe('most likes', () => {
+      test('most likes', () => {
+        expect(listHelper.mostLikes(blogs)).toEqual(mostLikes)
       })
 })
