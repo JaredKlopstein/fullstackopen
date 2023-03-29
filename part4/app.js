@@ -1,11 +1,13 @@
-const config = require('./utils/config')
+const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
 const cors = require('cors')
+
 const blogsRouter = require('./controllers/blogs')
-const mongoose = require('mongoose')
+
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
+const config = require('./utils/config')
 
 mongoose.set('strictQuery', false)
 
@@ -18,7 +20,7 @@ mongoose
     })
     .catch((error) => {
       logger.error('error connecting to MongoDB:', error.message)
-    })
+    });
 
 app.use(cors())
 app.use(express.static('build'))
