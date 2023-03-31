@@ -84,6 +84,22 @@ test('A blog without likes is defaulted to 0', async () => {
         const likes = blogsAtEnd.map(b => b.likes)
         expect(likes).toContain(0)
       })
+
+test('Blog without URL or Title does not get added', async () => {
+    const newBlog = {
+        "author": "Jared Klopstein",
+        "likes": 4
+      }
+      
+        await api
+          .post('/api/blogs')
+          .send(newBlog)
+          .expect(400)
+      
+        const blogsAtEnd = await helper.blogsInDb()
+      
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+      })
 })
 
 afterAll(async () => {
