@@ -20,7 +20,7 @@ beforeEach(async () => {
     await Promise.all(promiseArray)
   },100000)
 
-describe('Blog Tests', () => {
+describe('GET Tests', () => {
 test('Blog length is correct', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(helper.initialBlogs.length)
@@ -39,6 +39,7 @@ test('Blogs ID is ID', async () => {
 }, 100000)
 })
 
+describe('POSTS Tests', () => {
 test('A blog can be added', async () => {
     const newBlog = {
         "title": "Jared makes an app V2",
@@ -61,6 +62,29 @@ test('A blog can be added', async () => {
       'Jared makes an app V2'
     )
   })
+
+test('A blog without likes is defaulted to 0', async () => {
+    const newBlog = {
+        "title": "Jared makes an app V2",
+        "author": "Jared Klopstein",
+        "url": "jaredklopstein.com/blog/example",
+      }
+
+    //   if (!('likes' in newBlog)) {
+    //     newBlog.likes = 0;
+    //   }
+      
+        await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+      
+        const blogsAtEnd = await helper.blogsInDb()
+        const likes = blogsAtEnd.map(b => b.likes)
+        expect(likes).toContain(0)
+      })
+})
 
 afterAll(async () => {
   await mongoose.connection.close()

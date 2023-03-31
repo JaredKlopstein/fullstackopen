@@ -4,6 +4,5 @@ content-type: application/json
 {
   "title": "Jared makes an app V2",
   "author": "Jared Klopstein",
-  "url": "jaredklopstein.com/blog/example",
-  "likes": 4
+  "url": "jaredklopstein.com/blog/example"
 }
