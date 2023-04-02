@@ -119,6 +119,24 @@ describe('deletion of a note', () => {
     })
   })
 
+describe('updating a note', () => {
+    test('returns new note with updated likes ', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToUpdate = blogsAtStart[0]
+        
+        blogToUpdate.likes = 100;
+
+        await api
+          .put(`/api/blogs/${blogToUpdate.id}`)
+          .send(blogToUpdate)
+          .expect(200)
+    
+        const blogLikes = blogToUpdate.likes
+    
+        expect(blogLikes).toBe(100)
+    })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
