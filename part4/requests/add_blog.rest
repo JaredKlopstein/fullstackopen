@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-  "title": "Jared makes an app V2",
+  "title": "Jared makes an app V4",
   "author": "Jared Klopstein",
   "url": "jaredklopstein.com/blog/example",
-  "likes": 4
+  "likes": 4,
+  "userId": "642aefae383895510fe20285"
 }
