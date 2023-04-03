@@ -1,5 +1,6 @@
-POST http://localhost:3003/api/blogs/ HTTP/1.1
+POST http://localhost:3003/api/blogs/
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QyMjIiLCJpZCI6IjY0MmFmNWRkNGU0ZDBjNGE1NGM0Njc0NCIsImlhdCI6MTY4MDU0MzQzMn0.GauxDjvRp8Yq__EHoa_DIdxSQIy155UKhOpebS2-Row
 
 {
   "title": "Jared makes an app V4",
