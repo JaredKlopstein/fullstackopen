@@ -17,17 +17,9 @@ blogsRouter.get('/:id', async (request, response) => {
     }
   })
 
-const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.startsWith('Bearer ')) {
-      return authorization.replace('Bearer ', '')
-    }
-    return null
-  }
-
 blogsRouter.post('/', async (request, response) => {
     const blog = new Blog(request.body)
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if (!decodedToken.id) {
       return response.status(401).json({ error: 'token invalid' })
     }
@@ -49,9 +41,21 @@ blogsRouter.post('/', async (request, response) => {
   })
 
 blogsRouter.delete('/:id', async (request, response) => {
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+  const blog = await Blog.findById(request.params.id)
+
+  if ( blog.user.toString() === user.id.toString() ) {
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
-  })
+  }
+  else {
+    return response.status(401).json({ error: 'You are not allowed to delete this.' }).end()
+  }
+})
 
 blogsRouter.put('/:id', async (request, response) => {
     const body = request.body

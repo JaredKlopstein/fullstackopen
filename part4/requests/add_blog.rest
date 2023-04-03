@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs/
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QyMjIiLCJpZCI6IjY0MmFmNWRkNGU0ZDBjNGE1NGM0Njc0NCIsImlhdCI6MTY4MDU0MzQzMn0.GauxDjvRp8Yq__EHoa_DIdxSQIy155UKhOpebS2-Row
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QyMjIiLCJpZCI6IjY0MmFmNWRkNGU0ZDBjNGE1NGM0Njc0NCIsImlhdCI6MTY4MDU0NDAwN30.bEtZZE3vWZ0HFp501RTNKNuUdj2iM5_6O6mHLv8EW7I
 
 {
-  "title": "Jared makes an app V4",
+  "title": "Testing middleware",
   "author": "Jared Klopstein",
   "url": "jaredklopstein.com/blog/example",
   "likes": 4,
