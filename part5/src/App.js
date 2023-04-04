@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Toggable'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -10,9 +12,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setURL] = useState('')
+
+  const blogFormRef = useRef()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -80,52 +81,24 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
   };
 
-  const blogForm = () => (
-    <>
-    <h2>Create new Blog</h2>
-    <form onSubmit={addBlog}>
-      <div>
-      Title:<input
-        value={title}
-        onChange={({ target }) => setTitle(target.value)}
-        />
-        </div>
-        <div>
-      Author:<input
-        value={author}
-        onChange={({ target }) => setAuthor(target.value)}
-        />
-        </div>
-        <div>
-      URL:<input
-        value={url}
-        onChange={({ target }) => setURL(target.value)}
-        />
-        </div>
-      <button type="submit">Create</button>
-    </form>  
-        </>
-  )
-
-  const addBlog = (event) => {
-    event.preventDefault();
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url,
-    };
-
+  const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
-      setTitle("");
-      setAuthor("");
-      setURL("");
       setNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
     });
   };
+
+  const blogForm = () => (
+    <>
+    <Togglable buttonLabel='New Blog' ref={blogFormRef}>
+      <BlogForm createBlog={addBlog} />
+    </Togglable>
+    </>
+  )
 
   return (
     <div>
