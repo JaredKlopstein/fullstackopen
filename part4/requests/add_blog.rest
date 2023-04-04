@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs/
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QyMjIiLCJpZCI6IjY0MmFmNWRkNGU0ZDBjNGE1NGM0Njc0NCIsImlhdCI6MTY4MDU0NDAwN30.bEtZZE3vWZ0HFp501RTNKNuUdj2iM5_6O6mHLv8EW7I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphcmVka2xvcHN0ZWluIiwiaWQiOiI2NDJiMTc4NTBiYjdhNTU1MGZhY2NkYWIiLCJpYXQiOjE2ODA1NTE3NjR9.Ww8Z7gRVXTWrWH9awYcc2x1df8_ADoXY1mhpMtKEImA
 
 {
-  "title": "Testing middleware",
+  "title": "Testing section 4",
   "author": "Jared Klopstein",
   "url": "jaredklopstein.com/blog/example",
   "likes": 4,
