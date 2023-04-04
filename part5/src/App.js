@@ -95,18 +95,23 @@ const App = () => {
   const blogForm = () => (
     <>
     <Togglable buttonLabel='New Blog' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} user={user.username}/>
+      <BlogForm createBlog={addBlog} />
     </Togglable>
     </>
   )
 
-  const handleLike = (id) => {
-    const blog = blogs.find((b) => b.id === id);
+  const handleLike = async (blog) => {
     const changedBlog = { ...blog, likes: blog.likes + 1 };
-    blogService
-    .update(id, changedBlog).then(returnedBlog => {
-      setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
-    })
+    await blogService.update(blog, changedBlog)
+    setBlogs(blogs.map(blog => blog.id !== changedBlog.id ? blog : changedBlog))
+  };
+
+  const handleDelete = async (blog) => {
+    if(window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
+      await blogService
+      .remove(blog)
+      setBlogs(blogs.filter(currnetBlog => currnetBlog.id !== blog.id))
+    }
   };
 
   return (
@@ -131,7 +136,8 @@ const App = () => {
         <Blog key={blog.id} 
         blog={blog} 
         user={user}
-        handleLike={() => handleLike(blog.id)}/>
+        handleLike={() => handleLike(blog)}
+        handleDelete={() => handleDelete(blog)}/>
       )}
       </div>
     }
