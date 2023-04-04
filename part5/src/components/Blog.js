@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, handleLike }) => {
   const [toggle, setToggle] = useState(true)
 
   const blogStyle = {
@@ -27,7 +27,7 @@ const Blog = ({ blog, user }) => {
     <div style={blogStyle}>
     <p>{blog.title} {blog.author} <button onClick={handleToggle}>Hide</button></p>
     <p>{blog.url}</p>
-    <p>likes {blog.likes} <button>Like</button></p> 
+    <p>likes {blog.likes} <button onClick={handleLike}>Like</button></p> 
     <p>{blog.user.name}</p>
     </div>
     </>
