@@ -8,7 +8,7 @@ import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
@@ -17,7 +17,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -41,7 +41,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -50,7 +50,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -58,13 +58,13 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -77,70 +77,70 @@ const App = () => {
   }, [])
 
   const handleLogOut = () => {
-    setUser(null);
+    setUser(null)
     window.localStorage.removeItem('loggedBlogappUser')
-  };
+  }
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog));
+      setBlogs(blogs.concat(returnedBlog))
       setNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
-    });
-  };
+    })
+  }
 
   const blogForm = () => (
     <>
-    <Togglable buttonLabel='New Blog' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />
-    </Togglable>
+      <Togglable buttonLabel='New Blog' ref={blogFormRef}>
+        <BlogForm createBlog={addBlog} />
+      </Togglable>
     </>
   )
 
   const handleLike = async (blog) => {
-    const changedBlog = { ...blog, likes: blog.likes + 1 };
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
     await blogService.update(blog, changedBlog)
     setBlogs(blogs.map(blog => blog.id !== changedBlog.id ? blog : changedBlog))
-  };
+  }
 
   const handleDelete = async (blog) => {
     if(window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
       await blogService
-      .remove(blog)
+        .remove(blog)
       setBlogs(blogs.filter(currnetBlog => currnetBlog.id !== blog.id))
     }
-  };
+  }
 
   return (
     <div>
-    {!user && 
+      {!user &&
     <>
-    <h1>Log into application</h1>
-    {notification !== null && <Notification message={notification}/>}
-    {loginForm()}
+      <h1>Log into application</h1>
+      {notification !== null && <Notification message={notification}/>}
+      {loginForm()}
     </>
-    } 
-    {user && 
+      }
+      {user &&
       <div>
-       <h2>Blogs</h2>
-       {notification !== null && <Notification message={notification}/>}
-       <p>{user.name} logged in</p>
-       {user && <button onClick={() => handleLogOut()}>
+        <h2>Blogs</h2>
+        {notification !== null && <Notification message={notification}/>}
+        <p>{user.name} logged in</p>
+        {user && <button onClick={() => handleLogOut()}>
           Logout
         </button>}
         {blogForm()}
-       {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} 
-        blog={blog} 
-        user={user}
-        handleLike={() => handleLike(blog)}
-        handleDelete={() => handleDelete(blog)}/>
-      )}
+        {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+          <Blog key={blog.id}
+            blog={blog}
+            user={user}
+            handleLike={() => handleLike(blog)}
+            handleDelete={() => handleDelete(blog)}/>
+        )}
       </div>
-    }
+      }
     </div>
   )
 }
