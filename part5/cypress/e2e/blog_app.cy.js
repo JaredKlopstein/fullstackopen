@@ -37,4 +37,22 @@ describe('Blog app', function() {
       cy.get('html').should('not.contain', 'Matti Luukkainen logged in')
     })
   })
+  describe('when logged in', function() {
+    beforeEach(function() {
+      cy.request('POST', 'http://localhost:3003/api/login', { username: 'admin', password: '12345' })
+        .then(response => {
+          localStorage.setItem('loggedBlogappUser', JSON.stringify(response.body))
+          cy.visit('http://localhost:3000')
+        })
+    })
+
+    it('a new blog can be created', function() {
+      cy.contains('New Blog').click()
+      cy.get('.title').type('Another Blog...')
+      cy.get('.author').type('Author')
+      cy.get('.url').type('example.com')
+      cy.get('.create-button').click()
+      cy.contains('Another Blog...')
+    })
+  })
 })
