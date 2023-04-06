@@ -72,6 +72,64 @@ describe('Blog app', function() {
         cy.get('.likes')
           .contains(1)
       })
+      it('blog can be deleted by user who created it', function () {
+        cy.contains('View')
+          .click()
+
+        cy.contains('Delete')
+          .click()
+        cy.get('html').should('not.contain', 'View')
+      })
+    })
+  })
+  describe('Two users at once', function() {
+    beforeEach(function () {
+      cy.request('POST', 'http://localhost:3003/api/testing/reset')
+      const user = {
+        name: 'Jared Klopstein',
+        username: 'JaredKlopstein',
+        password: 'cash123'
+      }
+      cy.request('POST', 'http://localhost:3003/api/users/', user)
+
+      cy.request('POST', 'http://localhost:3003/api/login', { username: 'JaredKlopstein', password: 'cash123' })
+        .then(response => {
+          localStorage.setItem('loggedBlogappUser', JSON.stringify(response.body))
+          cy.visit('http://localhost:3000')
+        })
+
+      cy.contains('New Blog').click()
+      cy.get('.title').type('Jared Klopstein Blog')
+      cy.get('.author').type('Jared Klopstein')
+      cy.get('.url').type('example.com')
+      cy.get('.create-button').click()
+
+
+      const anotherUser = {
+        name: 'Cash Klopstein',
+        username: 'CashKlopstein',
+        password: 'jared123'
+      }
+      cy.request('POST', 'http://localhost:3003/api/users/', anotherUser)
+
+      cy.request('POST', 'http://localhost:3003/api/login', { username: 'CashKlopstein', password: 'jared123' })
+        .then(response => {
+          localStorage.setItem('loggedBlogappUser', JSON.stringify(response.body))
+          cy.visit('http://localhost:3000')
+        })
+      cy.contains('New Blog').click()
+      cy.get('.title').type('Cash Klopstein Blog')
+      cy.get('.author').type('Cash Klopstein')
+      cy.get('.url').type('example.com')
+      cy.get('.create-button').click()
+    })
+    it('blog can\'t be deleted by user who didn\'t create it, but can delete their own', function () {
+      cy.contains('View')
+        .click()
+      cy.get('html').should('not.contain', 'Delete')
+      cy.contains('View')
+        .click()
+      cy.get('html').should('contain', 'Delete')
     })
   })
 })
