@@ -18,4 +18,23 @@ describe('Blog app', function() {
       cy.contains('password')
     })
   })
+  describe('Login',function() {
+    it('succeeds with correct credentials', function() {
+      cy.contains('log in').click()
+      cy.get('#username').type('admin')
+      cy.get('#password').type('12345')
+      cy.get('#login-button').click()
+
+      cy.contains('Admin logged in')
+    })
+
+    it('fails with wrong credentials', function() {
+      cy.contains('log in').click()
+      cy.get('#username').type('jaredk')
+      cy.get('#password').type('wrong')
+      cy.get('#login-button').click()
+
+      cy.get('html').should('not.contain', 'Matti Luukkainen logged in')
+    })
+  })
 })
