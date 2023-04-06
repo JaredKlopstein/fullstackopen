@@ -132,4 +132,67 @@ describe('Blog app', function() {
       cy.get('html').should('contain', 'Delete')
     })
   })
+  describe('Blogs are sorted correctly by likes', function() {
+    it.only('blog can\'t be deleted by user who didn\'t create it, but can delete their own', function () {
+      const user = {
+        name: 'Jared Klopstein',
+        username: 'JaredKlopstein',
+        password: 'cash123'
+      }
+      cy.request('POST', 'http://localhost:3003/api/users/', user)
+
+      cy.request('POST', 'http://localhost:3003/api/login', { username: 'JaredKlopstein', password: 'cash123' })
+        .then(response => {
+          localStorage.setItem('loggedBlogappUser', JSON.stringify(response.body))
+          cy.visit('http://localhost:3000')
+        })
+
+      cy.contains('New Blog').click()
+      cy.get('.title').type('Jared Klopstein Blog with 0 likes')
+      cy.get('.author').type('Jared Klopstein')
+      cy.get('.url').type('example.com')
+      cy.get('.create-button').click()
+
+      cy.contains('New Blog').click()
+      cy.get('.title').type('Jared Klopstein Blog with 1 like')
+      cy.get('.author').type('Jared Klopstein')
+      cy.get('.url').type('example.com')
+      cy.get('.create-button').click()
+
+      cy.contains('New Blog').click()
+      cy.get('.title').type('Jared Klopstein Blog with 2 likes')
+      cy.get('.author').type('Jared Klopstein')
+      cy.get('.url').type('example.com')
+      cy.get('.create-button').click()
+
+      cy.wait(200)
+
+      cy.contains('Blog with 1 like')
+        .find('button')
+        .should('contain', 'View')
+        .click()
+      cy.contains('Like')
+        .click()
+      cy.contains('Hide')
+        .click()
+
+      cy.wait(200)
+
+      cy.contains('Blog with 2 likes')
+        .find('button')
+        .should('contain', 'View')
+        .click()
+      cy.contains('Like')
+        .click()
+      cy.wait(200)
+      cy.contains('Like')
+        .click()
+      cy.contains('Hide')
+        .click()
+
+      cy.get('.shortBlog').eq(0).should('contain', 'Blog with 2 likes')
+      cy.get('.shortBlog').eq(1).should('contain', 'Blog with 1 like')
+      cy.get('.shortBlog').eq(2).should('contain', 'Blog with 0 likes')
+    })
+  })
 })
