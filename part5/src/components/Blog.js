@@ -27,7 +27,7 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
         <div style={blogStyle} className="fullBlog">
           <p>{blog.title} {blog.author} <button onClick={handleToggle}>Hide</button></p>
           <p>{blog.url}</p>
-          <p>likes {blog.likes} <button onClick={handleLike}>Like</button></p>
+          <p className='likes'>likes {blog.likes} <button onClick={handleLike}>Like</button></p>
           <p>{blog.user.name}</p>
           {blog.user.username === user.username
       && <button onClick={handleDelete}>Delete</button>
